@@ -1,7 +1,7 @@
 import time
 import random
-
-print("Welcome to TIG text based adventure\nType \"help\" to get started!\n")
+#inspired by adarkroom
+print("Welcome to the text based adventure\nType \"help\" to get started!\n")
 inventory = {
     "crate": 1,
     "match": 5,
@@ -21,7 +21,7 @@ connect_exit={
 is_dictionary={
     "game": "good"
 }
-game_over = False;
+game_over = False
 current_loc = "dark room"
 while game_over == False:
     prompt = input("Enter command: ").split(" ")
@@ -106,3 +106,22 @@ while game_over == False:
             print("You see a dimly lit candle and an old wooden door. [Possible interactions: door, candle]")
         else:
             pass 
+    elif prompt[0] == "go":
+        interact = prompt[1]
+        interaction = goto.index(interact)
+        if interaction in connect_entry:
+            if interaction in connect_exit:
+                if current_loc == connect_entry[interaction]:
+                    print("You use the " + interact + " and you enter the " + connect_exit[interaction])
+                    #too lazy to make this more sophisticated
+                    current_loc = connect_exit[interaction]
+                elif current_loc == connect_exit[interaction]:
+                    print("You use the " + interact + " and you enter the " + connect_entry[interaction])
+                    current_loc = connect_entry[interaction]
+                else:
+                    print("You're not in the right room to go here!")
+            else:
+                pass
+                #should be a conditional statement for each possible interaction...
+        else:
+            print("Does not exist!")
