@@ -24,7 +24,7 @@ is_dictionary={
 game_over = False
 current_loc = "dark room"
 while game_over == False:
-    prompt = input("Enter command: ").split(" ")
+    prompt = input("").split(" ")
    
     if prompt[0] == "help":
         if len(prompt) == 1:
