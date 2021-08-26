@@ -102,11 +102,28 @@ while game_over == False:
                 
                 
     elif prompt[0] == "look":
-        #reminder to self: code this to check what interactions are linked to current room based on our interact entry/exit.
-        if current_loc == "dark room":
-            print("You see a dimly lit candle and an old wooden door. [Possible interactions: door, candle]")
+        possible_interaction = []
+        for i in connect_entry.keys():
+            if connect_entry[i] == current_loc:
+                possible_interaction.append(goto[i])
+        for i in connect_exit.keys():
+            if connect_exit[i] == current_loc:
+                possible_interaction.append(goto[i])
+        message = "You see:"
+        if len(possible_interaction) == 0:
+            message = ""
+        elif len(possible_interaction) < 2:
+            for i in possible_interaction:
+                message += "\n" 
+                message += i
         else:
-            pass 
+            num = len(possible_interaction)
+            for i in range(num-1):
+                pass
+
+        print("You look around the " + current_loc + ". You se")
+
+
         
     elif prompt[0] == "go":
         interact = prompt[1]
