@@ -8,14 +8,19 @@ inventory = {
     "wood": 10,
     "dictionary": 1
 }
-goto = ["door","candle"]
-rooms = ["dark room","basement","yard"]
+goto = ["door","candle","trapdoor","stairs"]
+rooms = ["dark room","basement","yard","living room"]
 connect_entry={
     0: "dark room",
-    1: "dark room"
+    1: "dark room",
+    2: "dark room",
+    3: "basement",
+    
 }
 connect_exit={
-    0:"yard"
+    0:"yard",
+    2:"basement",
+    3:"living room",
 }
 #this part is sad
 is_dictionary={
