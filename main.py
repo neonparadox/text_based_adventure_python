@@ -109,19 +109,14 @@ while game_over == False:
         for i in connect_exit.keys():
             if connect_exit[i] == current_loc:
                 possible_interaction.append(goto[i])
-        message = "You see:"
-        if len(possible_interaction) == 0:
-            message = ""
-        elif len(possible_interaction) < 2:
-            for i in possible_interaction:
-                message += "\n" 
-                message += i
-        else:
-            num = len(possible_interaction)
-            for i in range(num-1):
-                pass
+        message = "**********\nYou can go to:"
+        
+        for i in possible_interaction: 
+            message += "\n"
+            message += i
+    
 
-        print("You look around the " + current_loc + ". You se")
+        print("You look around the " + current_loc + ".\n"+message+"\n**********")
 
 
         
