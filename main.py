@@ -9,6 +9,7 @@ inventory = {
 }
 goto = ["door","candle","trapdoor","stairs","chest"]
 rooms = ["dark room","basement","yard","living room"]
+
 connect_entry={
     0: "dark room",
     1: "dark room",
@@ -16,12 +17,18 @@ connect_entry={
     3: "basement",
     4: "basement",
 }
+
 connect_exit={
     0:"yard",
     2:"basement",
     3:"living room",
 }
-#this part is sad
+
+used_interactions = {
+    1:False,
+    4:False,
+}
+
 is_dictionary={
     "game": "good"
 }
@@ -34,8 +41,9 @@ def inventorycheck():
                 
 while game_over == False:
     inventorycheck()
-    prompt = input("").split(" ")
+    prompt = input("> ").split(" ")
    
+    print("")
     if prompt[0] == "help":
         if len(prompt) == 1:
             print("HELP PAGE:")
@@ -113,49 +121,59 @@ while game_over == False:
 
         
     elif prompt[0] == "go":
+        
         interact = prompt[1]
-        interaction = goto.index(interact)
-        if interaction in connect_entry:
-            if interaction in connect_exit:
-                if current_loc == connect_entry[interaction]:
-                    print("You use the " + interact + " and you enter the " + connect_exit[interaction])
-                    #too lazy to make this more sophisticated
-                    current_loc = connect_exit[interaction]
-                elif current_loc == connect_exit[interaction]:
-                    print("You use the " + interact + " and you enter the " + connect_entry[interaction])
-                    current_loc = connect_entry[interaction]
-                else:
-                    print("You're not in the right room to go here!")
-            else:
-                print("You go to the " + str(interact))
-                if interact == "candle":
-                    if "key" in inventory.keys():
-                        inventory["key"] += 1
-                        
-                    else:
-                        inventory["key"] = 1
-                    print("You looked under the candle and you found a key :O")
-                elif interact == "chest":
-                    open_or_no = input("Do you want to open the chest? y/n\n")
-                    if open_or_no == "y":
-                        if "key" in inventory.keys():
-                            if inventory["key"] > 0:
-                                inventory["key"] -= 1
-                                print("Yay! You opened the chest with a key :D")
-                                if "map" not in inventory.keys():
-                                    inventory["map"] = 1
-                                else:
-                                    inventory["map"] += 1
-                                print("\nYou found a map! You can now use it :O")
-
-                            else:
-                               print("You need a key to open this chest :(")
-                        else:
-                            print("You need a key to open this chest :(")
-                    else:
-                        print("Aw :(")
-                else:
-                    pass
-                #should be a conditional statement for each possible interaction...
+        if interact not in goto:
+            print("That doesnt exist :^)")
         else:
-            print("Does not exist!")
+            interaction = goto.index(interact)
+            if interaction in connect_entry:
+                if interaction in connect_exit:
+                    if current_loc == connect_entry[interaction]:
+                        print("You use the " + interact + " and you enter the " + connect_exit[interaction])
+                        #too lazy to make this more sophisticated
+                        current_loc = connect_exit[interaction]
+                    elif current_loc == connect_exit[interaction]:
+                        print("You use the " + interact + " and you enter the " + connect_entry[interaction])
+                        current_loc = connect_entry[interaction]
+                    else:
+                        print("You're not in the right room to go here!")
+                else:
+                    if used_interactions[interaction] == False:
+                        used_interactions[interaction] = True
+                    else:
+                        print("You've already gone here, there's nothing left!")
+                        continue
+                    print("You go to the " + interact)
+                    
+                    if interact == "candle":
+                        if "key" in inventory.keys():
+                            inventory["key"] += 1
+                            
+                        else:
+                            inventory["key"] = 1
+                        print("You looked under the candle and you found a key :O")
+                    elif interact == "chest":
+                        open_or_no = input("Do you want to open the chest? y/n\n")
+                        if open_or_no == "y":
+                            if "key" in inventory.keys():
+                                if inventory["key"] > 0:
+                                    inventory["key"] -= 1
+                                    print("Yay! You opened the chest with a key :D")
+                                    if "axe" not in inventory.keys():
+                                        inventory["axe"] = 1
+                                    else:
+                                        inventory["axe"] += 1
+                                    print("\nYou found an axe! You can now use it to break stuff :O")
+
+                                else:
+                                    print("You need a key to open this chest :(")
+                            else:
+                                print("You need a key to open this chest :(")
+                        else:
+                            print("Aw :(")
+                    else:
+                        pass
+                    #should be a conditional statement for each possible interaction...
+            else:
+                print("Does not exist!")
