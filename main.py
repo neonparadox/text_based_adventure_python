@@ -5,17 +5,16 @@ print("Welcome to the text based adventure\nType \"help\" to get started!\n")
 inventory = {
     "crate": 1,
     "match": 5,
-    "wood": 10,
-    "dictionary": 1
+    "dictionary": 1,
 }
-goto = ["door","candle","trapdoor","stairs"]
+goto = ["door","candle","trapdoor","stairs","chest"]
 rooms = ["dark room","basement","yard","living room"]
 connect_entry={
     0: "dark room",
     1: "dark room",
     2: "dark room",
     3: "basement",
-    
+    4: "basement",
 }
 connect_exit={
     0:"yard",
@@ -28,7 +27,13 @@ is_dictionary={
 }
 game_over = False
 current_loc = "dark room"
+def inventorycheck():
+    for i in list(inventory.keys()):
+        if inventory[i] == 0:
+            inventory.pop(i)
+                
 while game_over == False:
+    inventorycheck()
     prompt = input("").split(" ")
    
     if prompt[0] == "help":
@@ -74,37 +79,19 @@ while game_over == False:
                     print(key + " is " + is_dictionary[key])
             elif prompt[1] == "crate":
                 print("You open your crate.")
-                number=random.randint(1,len(is_dictionary)+1)
-                if number != len(is_dictionary)+1:
-                    
-                    match_add = random.randint(5,10)
-                    print("You find a key as well as " + str(match_add) + " matches.")
-                    if "match" in inventory.keys():
-                        inventory["match"] += match_add
-                    else:
-                        inventory["match"] = match_add
-                    if "key" in inventory.keys():
-                        inventory["key"] += 1
-                    else:
-                        inventory["key"] = 1
-                   
+                
+                 
+                match_add = random.randint(5,10)
+                print("You find " + str(match_add) + " matches.")
+                if "match" in inventory.keys():
+                    inventory["match"] += match_add
                 else:
-                  
-                    match_add = random.randint(5,10)
-                    print("You find " + str(match_add) + " matches.")
-                    if "match" in inventory.keys():
-                        inventory["match"] += match_add
-                    else:
-                        inventory["match"] = match_add
+                    inventory["match"] = match_add
                 inventory["crate"] -= 1
             else:
                 pass
         else:
             print("You don't own this item")
-        for i in list(inventory.keys()):
-            if inventory[i] == 0:
-                inventory.pop(i)
-                
                 
     elif prompt[0] == "look":
         possible_interaction = []
@@ -140,7 +127,35 @@ while game_over == False:
                 else:
                     print("You're not in the right room to go here!")
             else:
-                pass
+                print("You go to the " + str(interact))
+                if interact == "candle":
+                    if "key" in inventory.keys():
+                        inventory["key"] += 1
+                        
+                    else:
+                        inventory["key"] = 1
+                    print("You looked under the candle and you found a key :O")
+                elif interact == "chest":
+                    open_or_no = input("Do you want to open the chest? y/n\n")
+                    if open_or_no == "y":
+                        if "key" in inventory.keys():
+                            if inventory["key"] > 0:
+                                inventory["key"] -= 1
+                                print("Yay! You opened the chest with a key :D")
+                                if "map" not in inventory.keys():
+                                    inventory["map"] = 1
+                                else:
+                                    inventory["map"] += 1
+                                print("\nYou found a map! You can now use it :O")
+
+                            else:
+                               print("You need a key to open this chest :(")
+                        else:
+                            print("You need a key to open this chest :(")
+                    else:
+                        print("Aw :(")
+                else:
+                    pass
                 #should be a conditional statement for each possible interaction...
         else:
             print("Does not exist!")
