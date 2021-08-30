@@ -137,8 +137,11 @@ while game_over == False:
                         print("You use the " + interact + " and you enter the " + connect_entry[interaction])
                         current_loc = connect_entry[interaction]
                     else:
-                        print("You're not in the right room to go here!")
+                        print("Not in current room.")
                 else:
+                    if current_loc != connect_entry[interaction]:
+                        print("Not in current room.")
+                        continue
                     if used_interactions[interaction] == False:
                         used_interactions[interaction] = True
                     else:
@@ -154,7 +157,7 @@ while game_over == False:
                             inventory["key"] = 1
                         print("You looked under the candle and you found a key :O")
                     elif interact == "chest":
-                        open_or_no = input("Do you want to open the chest? y/n\n")
+                        open_or_no = input("Do you want to open the chest? y/n\n> ")
                         if open_or_no == "y":
                             if "key" in inventory.keys():
                                 if inventory["key"] > 0:
